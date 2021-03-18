@@ -295,14 +295,101 @@ public class DBproject{
 		return input;
 	}//end readChoice
 
-	public static void AddShip(DBproject esql) {//1
-	}
+public static void AddShip(DBproject esql) {//1
+        try {
+            String query = "INSERT INTO Ship (shipID, shipAge, shipSeats, shipMake, shipModel) VALUES (";
+            System.out.println("Enter the ship ID:");
+            String inputShipID = in.readLine();
+            System.out.println("Enter the ship's age:");
+            String inputShipAge = in.readLine();
+            System.out.println("Enter the number of ship seats:");
+            String inputShipSeats = in.readLine();
+            System.out.println("Enter the make of the ship:");
+            String inputShipMake = in.readLine();
+            System.out.println("Enter the ship's model:");
+            String inputShipModel = in.readLine();
 
-	public static void AddCaptain(DBproject esql) {//2
-	}
+            query += inputShipID + ",'" + inputShipAge + "','" + inputShipSeats + "','" + inputShipMake + "'," + inputShipModel + "');";
+            System.out.println(query);
+            esql.executeUpdate(query);
 
-	public static void AddCruise(DBproject esql) {//3
-	}
+            String temp = "SELECT S.id FROM Ship S  = ";
+            temp += inputShipID + ";";
+            esql.executeQuery(temp);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        /*int shipID = 0;
+        int shipAge = 0;
+        int shipSeats = 0;
+        String shipMake = " ";
+        String shipModel = " ";
+
+        String sql = "SELECT id FROM ship;";
+        int id = 0;
+        try {
+            id = esql.executeQuery(sql) + 1;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        System.out.println(id);*/
+    }
+    public static void AddCaptain(DBproject esql) {//2
+        try {
+            String query = "INSERT INTO Captain (captainID,captainName) VALUES (";
+            System.out.println("Enter the captain ID:");
+            String captainID = in.readLine();
+            System.out.println("Enter the name of the captain:");
+            String captainName = in.readLine();
+
+            query += captainID + ",'" + captainName + "');";
+            System.out.println(query);
+            esql.executeUpdate(query);
+
+            String temp = "SELECT C.name FROM Captain C WHERE C.captainID = " + captainID;
+            esql.executeQuery(temp);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public static void AddCruise(DBproject esql) {//3
+            try {
+                String query = "INSERT INTO Cruise (cruiseDestination, cruiseDepartureTime, " +
+                        "cruiseDepartureDate, cruiseArrivalTime, cruiseArrivalDate, cruiseNumStops, " +
+                        "cruiseTicketsSold, cruiseTicketCost, cruiseNumber) VALUES (";
+                System.out.println("Enter the cruise destination:");
+                String cruiseDestination = in.readLine();
+                System.out.println("Enter the cruise departure time:");
+                String cruiseDepartureTime = in.readLine();
+                System.out.println("Enter the cruise departure date:");
+                String cruiseDepartureDate = in.readLine();
+                System.out.println("Enter the cruise arrival time:");
+                String cruiseArrivalTime = in.readLine();
+                System.out.println("Enter the cruise arrival date:");
+                String cruiseArrivalDate = in.readLine();
+                System.out.println("Enter the cruise number of stops:");
+                String cruiseNumStops = in.readLine();
+                System.out.println("Enter the number of cruise tickets sold:");
+                String cruiseTicketsSold = in.readLine();
+                System.out.println("Enter the cruise ticket price:");
+                String cruiseTicketCost = in.readLine();
+                System.out.println("Enter the cruise number:");
+                String cruiseNumber = in.readLine();
+                query += cruiseNumber + "," + cruiseTicketsSold + "," + cruiseTicketCost + ",'" + cruiseArrivalTime +
+                        "','" + cruiseDepartureDate + "','" + cruiseArrivalTime + "','" + cruiseArrivalDate + "','" +
+                        cruiseNumStops + "')";
+                System.out.println(query);
+                esql.executeUpdate(query);
+
+                String temp = "SELECT C.name FROM Cruise C WHERE C.cruiseNumber = " + cruiseNumber;
+                esql.executeQuery(temp);
+            }
+            catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
+    }
 
 
 	public static void BookCruise(DBproject esql) {//4
