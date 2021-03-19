@@ -393,19 +393,92 @@ public static void AddShip(DBproject esql) {//1
 
 
 	public static void BookCruise(DBproject esql) {//4
-		// Given a customer and a Cruise that he/she wants to book, add a reservation to the DB
+		try {
+			String status;
+			System.out.print("Enter Cruise Number: ");
+			int cruisenumber = Integer.parseInt(in.readLine());
+			System.out.print("Enter Customer Id: ");
+			String customerid = in.readLine();
+			System.out.print("Enter A Reservation Number: ");
+			String rnum  = in.readLine();
+
+			String query = "SELECT COUNT(rnum) FROM Reservation WHERE cid = " + cruisenumber;
+			List<List<String>> queryresult = esql.executeQueryAndReturnResult(query);
+			int totalreservations = Integer.parseInt(queryresult.get(0).get(0));
+
+			query = "SELECT S.seats FROM Ship S, CruiseInfo C WHERE C.cruise_id = " + cruisenumber + " AND S.id = C.ship_id";
+			queryresult = esql.executeQueryAndReturnResult(query);
+			int totalseats = Integer.parseInt(queryresult.get(0).get(0));
+
+			if (totalseats > totalreservations) {
+				status = "R";
+			}
+			else {
+				status = "W";
+			}
+			query = "INSERT INTO Reservation (rnum, ccid, cid, status) VALUES (";
+			query += rnum + "," + customerid + "," + cruisenumber + "," + status + ");";
+			esql.executeUpdate(query);
+		}
+		catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
 	}
 
 	public static void ListNumberOfAvailableSeats(DBproject esql) {//5
-		// For Cruise number and date, find the number of availalbe seats (i.e. total Ship capacity minus booked seats )
+		try {
+			// For Cruise number and date, find the number of availalbe seats (i.e. total Ship capacity minus booked seats )
+			System.out.print("Enter Cruise Number: ");
+			int cruisenumber = Integer.parseInt(in.readLine());
+			System.out.print("Enter Cruise Departure Time: ");
+			String date = in.readLine();
+
+			String query = "SELECT num_sold FROM Cruise WHERE cnum = " + cruisenumber;
+			List<List<String>> queryresult_reserved = esql.executeQueryAndReturnResult(query);
+			int reservedseats = Integer.parseInt(queryresult_reserved.get(0).get(0));
+
+			query = "SELECT S.seats FROM Ship S, CruiseInfo C WHERE C.cruise_id = " + cruisenumber + " AND S.id = C.ship_id";
+			List<List<String>> queryresult_total = esql.executeQueryAndReturnResult(query);
+			int totalseats = Integer.parseInt(queryresult_total.get(0).get(0));
+
+			int freeseats = totalseats - reservedseats;
+			System.out.print("Number of Available Seats: " + freeseats);
+		}
+		catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
 	}
 
 	public static void ListsTotalNumberOfRepairsPerShip(DBproject esql) {//6
 		// Count number of repairs per Ships and list them in descending order
+		try {
+			String query = "SELECT S.id, COUNT(R.rid) FROM Ship S, Repairs R WHERE S.id = R.ship_id GROUP BY S.id ORDER BY Desc COUNT(R.rid);";
+			List<List<String>> queryresult = esql.executeQueryAndReturnResult(query);
+
+			for (int i = 0; i < queryresult.size(); i++) {
+				System.out.println("Ship: " + queryresult.get(i).get(0) + ", Repairs: " + queryresult.get(i).get(0));
+			}
+		}
+		catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
 	}
 
-	
+
 	public static void FindPassengersCountWithStatus(DBproject esql) {//7
 		// Find how many passengers there are with a status (i.e. W,C,R) and list that number.
+		try {
+			System.out.print("Enter Cruise Number: ");
+			int cruisenumber = Integer.parseInt(in.readLine());
+			System.out.print("Enter Passenger Status: ");
+			String status = in.readLine();
+
+			String query = "SELECT COUNT(rnum) FROM Reservation WHERE cid = " + cruisenumber + " AND status = " + status + ";";
+			List<List<String>> queryresult = esql.executeQueryAndReturnResult(query);
+			System.out.println("Cruise has " + queryresult.get(0).get(0) + " people on the " + status + " list.");
+		}
+		catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
 	}
 }
