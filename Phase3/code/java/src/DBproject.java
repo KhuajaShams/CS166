@@ -296,6 +296,7 @@ public class DBproject{
 	}//end readChoice
 
 public static void AddShip(DBproject esql) {//1
+	//Prompt the user for details of a Ship and add it to the DB (query)
         try {
             String query = "INSERT INTO Ship (shipID, shipAge, shipSeats, shipMake, shipModel) VALUES (";
             System.out.println("Enter the ship ID:");
@@ -336,6 +337,7 @@ public static void AddShip(DBproject esql) {//1
         System.out.println(id);*/
     }
     public static void AddCaptain(DBproject esql) {//2
+	    //Prompt the user for details of a Captain and add it to the DB (query)
         try {
             String query = "INSERT INTO Captain (captainID,captainName) VALUES (";
             System.out.println("Enter the captain ID:");
@@ -355,6 +357,7 @@ public static void AddShip(DBproject esql) {//1
     }
 
     public static void AddCruise(DBproject esql) {//3
+	    //Prompt the user for details of a Cruise and add it to the DB (query)
             try {
                 String query = "INSERT INTO Cruise (cruiseDestination, cruiseDepartureTime, " +
                         "cruiseDepartureDate, cruiseArrivalTime, cruiseArrivalDate, cruiseNumStops, " +
