@@ -391,7 +391,12 @@ public static void AddShip(DBproject esql) {//1
             }
     }
 
-
+	/**
+	 * Take in a cruise number, customerid, and rnum
+	 * Do two queries to find the total reservations on the cruise and the total seats on the ship to see if there are any seats left
+	 * if there are more  seats on the ship than reserved seats then we book a customer with a reservation with all the appropriate credentials,
+	 * if not, then we put them on the waitlist instead using status = "R" or "W".
+	 */
 	public static void BookCruise(DBproject esql) {//4
 		try {
 			String status;
@@ -425,6 +430,14 @@ public static void AddShip(DBproject esql) {//1
 		}
 	}
 
+	/**
+	 * Try and catch any errors with running sql queries
+	 * Prompt user to give cruisenumber and cruise date and then call a query to find the amount of seats for sold for that cruise.
+	 * Take results as a List<List<String>> and store its first element inside reservedseats
+	 * Do a query to find the total seats on the ship and store it in total seats from the first element of the nested list.
+	 * Find out the amount of free seats using the difference between totalseats and reserved seats and print it out.
+	 */
+
 	public static void ListNumberOfAvailableSeats(DBproject esql) {//5
 		try {
 			// For Cruise number and date, find the number of availalbe seats (i.e. total Ship capacity minus booked seats )
@@ -449,6 +462,13 @@ public static void AddShip(DBproject esql) {//1
 		}
 	}
 
+	/**
+	 * Try and catch any errors with running sql queries
+	 * query the amount of repairs done on each ship and group the queries by ship id
+	 * store the results in the List<List<String>> where we have all the ships in descending order on the outer List based on repairs.
+	 * The inner list has the ship id in the first element and the number of repairs in the second element so we for loop through the
+	 * first List and print out the second list elements accordingly.
+	 */
 	public static void ListsTotalNumberOfRepairsPerShip(DBproject esql) {//6
 		// Count number of repairs per Ships and list them in descending order
 		try {
@@ -456,7 +476,7 @@ public static void AddShip(DBproject esql) {//1
 			List<List<String>> queryresult = esql.executeQueryAndReturnResult(query);
 
 			for (int i = 0; i < queryresult.size(); i++) {
-				System.out.println("Ship: " + queryresult.get(i).get(0) + ", Repairs: " + queryresult.get(i).get(0));
+				System.out.println("Ship: " + queryresult.get(i).get(0) + ", Repairs: " + queryresult.get(i).get(1));
 			}
 		}
 		catch (Exception e) {
@@ -464,7 +484,11 @@ public static void AddShip(DBproject esql) {//1
 		}
 	}
 
-
+	/**
+	 * Try and catch any errors with running sql queries
+	 * take in a cruisenumber and the status we want to see and run a query to return the amount of that type of status reservations for the cruise
+	 * we take the result as a List<List<String>> but only use the first element of both the other and inner list to get our query result.
+	 */
 	public static void FindPassengersCountWithStatus(DBproject esql) {//7
 		// Find how many passengers there are with a status (i.e. W,C,R) and list that number.
 		try {
